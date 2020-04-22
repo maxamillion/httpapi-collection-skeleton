@@ -1,0 +1,59 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+from __future__ import absolute_import, division, print_function
+
+__metaclass__ = type
+
+
+ANSIBLE_METADATA = {
+    "metadata_version": "1.1",
+    "status": ["preview"],
+    "supported_by": "community",
+}
+DOCUMENTATION = """
+---
+module: example_info
+short_description: Obtain information about an example GET API endpoint in {{ name }}
+description:
+  - This module obtains information about something.
+options:
+  some_param:
+    description:
+      - Example parameter.
+    required: false
+    type: str
+
+author: YOUR NAME OR ORGANIZATION HERE
+"""
+
+
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils._text import to_text
+
+from ansible.module_utils.six.moves.urllib.parse import quote
+from ansible.module_utils.six.moves.urllib.error import HTTPError
+from ansible_collections.{{ namespace }}.{{ name }}.plugins.module_utils.{{ name }} import {{ name | capitalize }}Request
+
+def main():
+
+    argspec = dict(
+        some_param=dict(required=False, type="str"),
+    )
+
+    module = AnsibleModule(argument_spec=argspec, supports_check_mode=True)
+
+    {{ name }}_request = {{ name | capitalize}}Request(module)
+
+    if module.params['some_param']:
+        # Using the params dict here will be converted into a query string automatically
+        my_params = {'query': module.params['some_param']}
+        someinfo_query = {{ name }}_request.get('/rest/someapi/', params=my_params)
+    else:
+        someinfo_query = deepsec_request.get('/rest/someapi')
+
+    module.exit_json(someinfo=someinfo_query, changed=False)
+
+
+if __name__ == "__main__":
+    main()
